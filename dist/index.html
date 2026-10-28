@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="cs" data-theme="dark">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sto myšlenek inspirovaných Stevem Jobsem. Zpomal. Posouvej. Přemýšlej jinak.">
+  <meta name="theme-color" content="#080808">
+  <title>Jobs — Prostor pro myšlenku.</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' rx='20' fill='%23080808'/%3E%3Ctext x='21' y='57' font-family='Arial' font-weight='700' font-size='50' fill='white'%3Ej.%3C/text%3E%3C/svg%3E">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem('jobs-theme')||'dark'}catch(e){}</script>
+  <link rel="stylesheet" href="style.css">
+  <script src="quotes.js" defer></script><script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#q-1">Přejít k myšlenkám</a>
+  <div class="reading-line" aria-hidden="true"><i id="progress"></i></div>
+  <header>
+    <a class="logo" href="#top" aria-label="Jobs — na začátek">jobs<span>.</span></a>
+    <nav aria-label="Hlavní navigace">
+      <button class="index-trigger" id="open-index" aria-haspopup="dialog">100 myšlenek <span>↗</span></button>
+      <div class="theme-switch" role="group" aria-label="Barevný režim">
+        <button data-set-theme="light" aria-label="Světlý režim" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg></button>
+        <button data-set-theme="dark" aria-label="Tmavý režim" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 14a8 8 0 0 1-10-10 8 8 0 1 0 10 10Z"/></svg></button>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-top"><span class="eyebrow">STEVE JOB<span class="tight">S</span> / 1955—2011</span><span class="edition">SBÍRKA Č. 001</span></div>
+      <div class="hero-title"><p class="kicker">PROSTOR PRO MYŠLENKU.</p><h1 id="hero-title">Myslet<br><span class="outline">jinak.</span><span class="star" aria-hidden="true">✳</span></h1></div>
+      <div class="hero-bottom"><p>100 myšlenek. Jeden jiný pohled.<br><span>Zpomal. To podstatné přichází postupně.</span></p><a class="start" href="#q-1"><span>Začni posouvat</span><span class="arrow">↓</span></a></div>
+      <div class="hero-rule"></div>
+    </section>
+    <section class="foreword" aria-label="O sbírce"><p>Malé věty.<br><span>Velký prostor</span><br>pro změnu.</p><div>O tvořivosti, odvaze a životě po svém.<br>Volné české parafráze myšlenek Steva Jobse.<br>Každé z nich dopřej chvíli.</div></section>
+    <div id="collection" aria-label="Sto myšlenek"></div>
+    <section class="outro"><span class="eyebrow">100 / 100 · A TEĎ TY.</span><h2>Další myšlenka<br>může být <em>tvoje.</em></h2><a href="#top" class="return">Ještě jednou <span>↗</span></a><footer><a class="logo" href="#top">jobs.</a><p>100 myšlenek inspirovaných Stevem Jobsem.<br>Volné české parafráze, nikoli doslovné citace.</p><button id="motion-toggle" aria-pressed="false">Omezit animace</button></footer></section>
+  </main>
+  <aside class="chapter-nav" aria-label="Přeskočit na desítku myšlenek" id="chapters"></aside>
+  <div class="reading-status" id="reading-status" aria-hidden="true"><span id="current-number">001</span><span class="status-track"></span><span>100</span></div>
+  <dialog id="index-dialog" aria-labelledby="index-title"><div class="dialog-head"><div><span class="eyebrow">VYBER SI VLASTNÍ CESTU</span><h2 id="index-title">100 myšlenek.</h2></div><button class="close" id="close-index" aria-label="Zavřít přehled">✕</button></div><div class="index-list" id="index-list"></div></dialog>
+  <noscript><p class="no-script">Pro animovanou sbírku zapni JavaScript v prohlížeči.</p></noscript>
+</body>
+</html>
