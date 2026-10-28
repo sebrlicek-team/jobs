@@ -11,6 +11,13 @@
   <script src="quotes.js" defer></script><script src="app.js" defer></script>
 </head>
 <body>
+  <div class="media-backdrop" aria-hidden="true" id="media-backdrop">
+    <img class="backdrop-item is-active" id="backdrop-keynote" src="media/jobs-keynote.webp" alt="" fetchpriority="high">
+    <img class="backdrop-item" id="backdrop-iphone" src="media/jobs-iphone.webp" alt="" loading="lazy">
+    <video class="backdrop-item" id="backdrop-video" muted loop playsinline preload="none" poster="media/jobs-aspen-poster.webp" disablepictureinpicture tabindex="-1" data-src="media/jobs-aspen.mp4"></video>
+    <div class="backdrop-veil"></div>
+  </div>
+  <button class="background-toggle" id="background-toggle" aria-pressed="false">Pozastavit pozadí <span aria-hidden="true">Ⅱ</span></button>
   <a class="skip" href="#q-1">Přejít k myšlenkám</a>
   <div class="reading-line" aria-hidden="true"><i id="progress"></i></div>
   <header>
@@ -26,14 +33,14 @@
   <main>
     <section class="hero" id="top" aria-labelledby="hero-title">
       <div class="hero-grid" aria-hidden="true"></div>
-      <div class="hero-top"><span class="eyebrow">STEVE JOB<span class="tight">S</span> / 1955—2011</span><span class="edition">SBÍRKA Č. 001</span></div>
-      <div class="hero-title"><p class="kicker">PROSTOR PRO MYŠLENKU.</p><h1 id="hero-title">Myslet<br><span class="outline">jinak.</span><span class="star" aria-hidden="true">✳</span></h1></div>
+      <div class="hero-top"><span class="eyebrow">STEVE JOB<span class="tight">S</span> / 1955—2011</span></div>
+      <div class="hero-title"><p class="kicker">PROSTOR PRO MYŠLENKU.</p><h1 id="hero-title">Myslet<br><span class="outline">jinak.</span></h1></div>
       <div class="hero-bottom"><p>100 myšlenek. Jeden jiný pohled.<br><span>Zpomal. To podstatné přichází postupně.</span></p><a class="start" href="#q-1"><span>Začni posouvat</span><span class="arrow">↓</span></a></div>
       <div class="hero-rule"></div>
     </section>
     <section class="foreword" aria-label="O sbírce"><p>Malé věty.<br><span>Velký prostor</span><br>pro změnu.</p><div>O tvořivosti, odvaze a životě po svém.<br>Volné české parafráze myšlenek Steva Jobse.<br>Každé z nich dopřej chvíli.</div></section>
     <div id="collection" aria-label="Sto myšlenek"></div>
-    <section class="outro"><span class="eyebrow">100 / 100 · A TEĎ TY.</span><h2>Další myšlenka<br>může být <em>tvoje.</em></h2><a href="#top" class="return">Ještě jednou <span>↗</span></a><footer><a class="logo" href="#top">jobs.</a><p>100 myšlenek inspirovaných Stevem Jobsem.<br>Volné české parafráze, nikoli doslovné citace.</p><button id="motion-toggle" aria-pressed="false">Omezit animace</button></footer></section>
+    <section class="outro"><span class="eyebrow">100 / 100 · A TEĎ TY.</span><h2>Další myšlenka<br>může být <em>tvoje.</em></h2><a href="#top" class="return">Ještě jednou <span>↗</span></a><footer><a class="logo" href="#top">jobs.</a><p>100 myšlenek inspirovaných Stevem Jobsem.<br>Volné české parafráze, nikoli doslovné citace.</p><a class="media-credits-link" href="media.html">Média</a><button id="motion-toggle" aria-pressed="false">Omezit animace</button></footer></section>
   </main>
   <aside class="chapter-nav" aria-label="Přeskočit na desítku myšlenek" id="chapters"></aside>
   <div class="reading-status" id="reading-status" aria-hidden="true"><span id="current-number">001</span><span class="status-track"></span><span>100</span></div>
