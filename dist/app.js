@@ -16,7 +16,7 @@ window.QUOTES.forEach((text,i)=>{
   const meta=document.createElement('div');meta.className='quote-meta';meta.textContent='MYŠLENKA '+pad(n)+' / 100';
   const quote=document.createElement('p');quote.className='quote-text';quote.setAttribute('aria-label',text);
   text.split(' ').forEach((word,j)=>{const span=document.createElement('span');span.className='word';span.textContent=word;span.setAttribute('aria-hidden','true');quote.append(span);if(j<text.split(' ').length-1)quote.append(' ')});
-  const caption=document.createElement('div');caption.className='quote-caption';caption.textContent='STEVE JOBS · VOLNĚ ČESKY';
+  const caption=document.createElement('div');caption.className='quote-caption';caption.textContent='STEVE JOBS';
   const number=document.createElement('span');number.className='scene-number';number.textContent=pad(n);number.setAttribute('aria-hidden','true');
   stage.append(meta,quote,caption,number);scene.append(stage);fragment.append(scene);
   const link=document.createElement('a');link.href='#q-'+n;
@@ -32,7 +32,7 @@ function theme(value){root.dataset.theme=value;themeButtons.forEach(b=>b.setAttr
 theme(root.dataset.theme);
 themeButtons.forEach(b=>b.addEventListener('click',()=>theme(b.dataset.setTheme)));
 const motionButton=document.getElementById('motion-toggle');
-function applyMotion(){root.classList.toggle('reduced',reduced);motionButton.setAttribute('aria-pressed',String(reduced));motionButton.textContent=reduced?'Zapnout animace':'Omezit animace';schedule()}
+function applyMotion(){root.classList.toggle('reduced',reduced);motionButton.setAttribute('aria-pressed',String(reduced));motionButton.textContent=reduced?'Zapnout animace':'Omezit animace';updateBackdrop();schedule()}
 motionButton.addEventListener('click',()=>{reduced=!reduced;motionOverride=reduced;try{localStorage.setItem('jobs-reduced',String(reduced))}catch(e){}applyMotion()});
 reducedQuery.addEventListener('change',e=>{if(motionOverride===null){reduced=e.matches;applyMotion()}});
 const dialog=document.getElementById('index-dialog');
@@ -57,10 +57,13 @@ function render(){
   const start=collection.offsetTop,end=start+collection.offsetHeight;
   document.body.classList.toggle('reading',y+vh*.5>start&&y+vh*.5<end);
   progress.style.transform='scaleX('+clamp(y/Math.max(1,document.documentElement.scrollHeight-vh))+')';
+  const onIntro=y<start-vh*.5;
+  const onOutro=y+vh*.5>=end;
+  if(onIntro!==introMedia||onOutro!==outroMedia){introMedia=onIntro;outroMedia=onOutro;updateBackdrop()}
   let nearest=-1,best=Infinity;
   visible.forEach(i=>{
     const rect=scenes[i].getBoundingClientRect();
-    const distance=Math.abs(rect.top);
+    const distance=Math.abs(rect.top+Math.min(0,rect.height-vh));
     if(distance<best){best=distance;nearest=i}
     if(reduced)return;
     // Reveal is tied to scroll position, so slow scrolling means slow animation.
@@ -75,10 +78,42 @@ function render(){
       word.style.filter='blur('+((1-eased)*3)+'px)';
     });
   });
-  if(nearest!==-1&&current!==nearest){current=nearest;currentNumber.textContent=pad(current+1);chapterLinks.forEach((a,i)=>{const active=i===Math.floor(current/10);a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current')})}
+  if(nearest!==-1&&current!==nearest){current=nearest;updateBackdrop();currentNumber.textContent=pad(current+1);chapterLinks.forEach((a,i)=>{const active=i===Math.floor(current/10);a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current')})}
 }
 function schedule(){if(!pending){pending=true;requestAnimationFrame(render)}}
 addEventListener('scroll',schedule,{passive:true});addEventListener('resize',schedule);
 addEventListener('keydown',e=>{if(dialog.open||!document.body.classList.contains('reading')||e.altKey||e.metaKey||e.ctrlKey)return;if(['ArrowRight','ArrowLeft'].includes(e.key)){e.preventDefault();const n=clamp(current+(e.key==='ArrowRight'?1:-1),0,99);scenes[n].scrollIntoView({behavior:reduced?'instant':'smooth'})}});
+
+// One shared media layer keeps the 100 sections light on memory.
+const backdrop=document.getElementById('media-backdrop');
+const backdropVideo=document.getElementById('backdrop-video');
+const backdropItems=[document.getElementById('backdrop-keynote'),document.getElementById('backdrop-iphone'),backdropVideo];
+const backgroundButton=document.getElementById('background-toggle');
+let backgroundPaused=false,introMedia=true,outroMedia=false,activeBackdrop=0;
+function initBackdrop(){
+  backgroundButton.addEventListener('click',()=>{backgroundPaused=!backgroundPaused;updateBackdrop()});
+  backdropVideo.addEventListener('playing',()=>{if(activeBackdrop===2&&!backgroundPaused&&!reduced){backdropItems.forEach((item,i)=>item.classList.toggle('is-active',i===2))}});
+  backdropVideo.addEventListener('error',()=>{backdropItems.forEach((item,i)=>item.classList.toggle('is-active',i===0))});
+  document.addEventListener('visibilitychange',()=>updateBackdrop());
+}
+function updateBackdrop(){
+  const stop=reduced||backgroundPaused;
+  const saveData=navigator.connection?.saveData;
+  const desired=introMedia?0:outroMedia?1:Math.floor(Math.max(0,current)/5)%3;
+  activeBackdrop=desired===2&&(stop||saveData)?0:desired;
+  backdrop.classList.toggle('still',stop);
+  backgroundButton.setAttribute('aria-pressed',String(backgroundPaused));
+  backgroundButton.innerHTML=backgroundPaused?'Spustit pozadí <span aria-hidden="true">▶</span>':'Pozastavit pozadí <span aria-hidden="true">Ⅱ</span>';
+  backgroundButton.hidden=reduced;
+  backdropItems.forEach((item,i)=>item.classList.toggle('is-active',i===activeBackdrop&&i!==2));
+  if(activeBackdrop===2&&!document.hidden){
+    if(!backdropVideo.getAttribute('src')){backdropVideo.src=backdropVideo.dataset.src;backdropVideo.load()}
+    backdropVideo.muted=true;
+    if(!backdropVideo.paused&&backdropVideo.readyState>=2)backdropVideo.classList.add('is-active');
+    else backdropVideo.play().catch(()=>{backdropItems[0].classList.add('is-active')});
+  }else backdropVideo.pause();
+}
+
+initBackdrop();
 applyMotion();
 if(location.hash.startsWith('#q-')){requestAnimationFrame(()=>document.getElementById(location.hash.slice(1))?.scrollIntoView({behavior:'instant'}))}

@@ -15,3 +15,7 @@ Web nevyžaduje sestavení ani externí závislosti. Publikovat lze obsah adres�
 - Web respektuje systémové omezení pohybu. V patičce lze animace také ručně vypnout.
 
 GitHub Pages může publikovat větev `gh-pages`, složku `/ (root)`. Tato větev obsahuje přímo statické soubory.
+
+## Fotografické a video pozadí
+
+Dvě lokální fotografie a krátká videosmyčka se mění podle pozice v textu. Video je bez zvuku, načítá se až při použití a vypíná se při omezení pohybu nebo zapnuté úspoře dat. Pozadí lze pozastavit samostatným tlačítkem. Autoři a podklady jsou uvedeni na `dist/media.html`.
